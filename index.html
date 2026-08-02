@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>品牌选车</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.header { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 24px; text-align: center; position: sticky; top: 0; z-index: 10; }
+.header h1 { font-size: 24px; font-weight: 700; }
+.header p { font-size: 14px; color: #86868b; margin-top: 4px; }
+
+.filters { display: flex; gap: 12px; padding: 16px 24px; flex-wrap: wrap; justify-content: center; background: #fff; border-bottom: 1px solid #f0f0f0; position: sticky; top: 73px; z-index: 10; }
+.filter-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.filter-btn { padding: 8px 16px; border: 1px solid #d2d2d7; border-radius: 20px; background: #fff; font-size: 13px; cursor: pointer; transition: all .2s; white-space: nowrap; }
+.filter-btn:hover { border-color: #0071e3; color: #0071e3; }
+.filter-btn.active { background: #0071e3; color: #fff; border-color: #0071e3; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; padding: 24px; max-width: 1200px; margin: 0 auto; }
+.card { background: #fff; border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform .2s, box-shadow .2s; border: 1px solid #f0f0f0; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,.1); }
+.card-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; }
+.card-body { padding: 16px; }
+.card-body h3 { font-size: 18px; margin-bottom: 4px; }
+.card-body .type { font-size: 12px; color: #86868b; margin-bottom: 8px; }
+.card-body .price { font-size: 20px; font-weight: 700; color: #0071e3; }
+.card-body .tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.tag { padding: 3px 10px; border-radius: 12px; font-size: 11px; background: #f5f5f7; color: #86868b; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.modal { background: #fff; border-radius: 20px; max-width: 480px; width: 100%; max-height: 80vh; overflow-y: auto; padding: 24px; }
+.modal h2 { font-size: 28px; margin-bottom: 12px; }
+.modal .car-icon { font-size: 80px; text-align: center; margin-bottom: 16px; }
+.modal .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.spec { background: #f5f5f7; border-radius: 12px; padding: 12px; }
+.spec .label { font-size: 11px; color: #86868b; }
+.spec .value { font-size: 16px; font-weight: 600; margin-top: 2px; }
+.modal .close-btn { display: block; width: 100%; padding: 12px; margin-top: 20px; background: #0071e3; color: #fff; border: none; border-radius: 12px; font-size: 16px; cursor: pointer; }
+
+.empty { text-align: center; padding: 60px 20px; color: #86868b; }
+.empty .icon { font-size: 60px; margin-bottom: 12px; }
+
+@media (max-width: 640px) {
+  .grid { grid-template-columns: 1fr; padding: 12px; }
+  .filters { padding: 12px; }
+  .header { padding: 12px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>品牌选车</h1>
+  <p>按品牌、类型、价位快速筛选你心仪的车型</p>
+</div>
+
+<div class="filters" id="filters"></div>
+<div class="grid" id="grid"></div>
+<div class="modal-overlay" id="modal" style="display:none"></div>
+
+<script>
+const cars = [
+  { brand:'比亚迪', icon:'🚗', country:'中国', types:['轿车','SUV','新能源'], price:'8-35万', priceMin:8, priceMax:35, desc:'中国新能源汽车领导者，刀片电池技术领先全球。', hp:'100-500匹', fuel:'纯电/混动', models:'秦、汉、唐、宋、海豹' },
+  { brand:'特斯拉', icon:'⚡', country:'美国', types:['轿车','SUV','新能源'], price:'23-90万', priceMin:23, priceMax:90, desc:'全球电动车标杆，Autopilot 自动驾驶技术领先。', hp:'280-1020匹', fuel:'纯电', models:'Model 3/Y/S/X、Cybertruck' },
+  { brand:'宝马', icon:'🚙', country:'德国', types:['轿车','SUV','性能车'], price:'25-200万', priceMin:25, priceMax:200, desc:'德系豪华品牌，操控性能卓越，驾驶者之车。', hp:'156-625匹', fuel:'燃油/纯电/混动', models:'3系、5系、X3、X5、iX' },
+  { brand:'奔驰', icon:'🚘', country:'德国', types:['轿车','SUV','性能车'], price:'25-300万', priceMin:25, priceMax:300, desc:'汽车发明者，豪华与舒适的代名词。', hp:'163-630匹', fuel:'燃油/纯电', models:'C级、E级、GLC、GLE、EQS' },
+  { brand:'奥迪', icon:'🏎️', country:'德国', types:['轿车','SUV','性能车'], price:'20-200万', priceMin:20, priceMax:200, desc:'科技感十足的德系豪华，Quattro 四驱闻名天下。', hp:'150-600匹', fuel:'燃油/纯电', models:'A4、A6、Q5、e-tron' },
+  { brand:'丰田', icon:'🚐', country:'日本', types:['轿车','SUV','新能源'], price:'12-40万', priceMin:12, priceMax:40, desc:'全球销量冠军，可靠耐用，保值率高。', hp:'100-300匹', fuel:'燃油/混动', models:'卡罗拉、凯美瑞、RAV4、汉兰达' },
+  { brand:'本田', icon:'🚗', country:'日本', types:['轿车','SUV'], price:'11-35万', priceMin:11, priceMax:35, desc:'发动机技术独步天下，兼顾动力与油耗。', hp:'120-280匹', fuel:'燃油/混动', models:'思域、雅阁、CR-V、XR-V' },
+  { brand:'日产', icon:'🚙', country:'日本', types:['轿车','SUV','新能源'], price:'10-35万', priceMin:10, priceMax:35, desc:'移动大沙发，舒适性出众的日系品牌。', hp:'120-300匹', fuel:'燃油/纯电', models:'轩逸、天籁、逍客、Ariya' },
+  { brand:'蔚来', icon:'🔋', country:'中国', types:['SUV','轿车','新能源'], price:'30-60万', priceMin:30, priceMax:60, desc:'中国高端电动车品牌，换电服务独树一帜。', hp:'435-653匹', fuel:'纯电', models:'ET5、ET7、ES6、ES8' },
+  { brand:'小鹏', icon:'🛸', country:'中国', types:['轿车','SUV','新能源'], price:'15-40万', priceMin:15, priceMax:40, desc:'智能驾驶先锋，XNGP 城市智驾覆盖最广。', hp:'200-500匹', fuel:'纯电', models:'P7、G6、G9、X9' },
+  { brand:'理想', icon:'🚐', country:'中国', types:['SUV','新能源'], price:'25-45万', priceMin:25, priceMax:45, desc:'家庭奶爸车首选，增程式无里程焦虑。', hp:'330-450匹', fuel:'增程', models:'L6、L7、L8、L9' },
+  { brand:'大众', icon:'🚗', country:'德国', types:['轿车','SUV','新能源'], price:'10-35万', priceMin:10, priceMax:35, desc:'德系国民品牌，品质扎实覆盖面广。', hp:'100-300匹', fuel:'燃油/纯电', models:'朗逸、帕萨特、途观、ID.4' },
+  { brand:'马自达', icon:'🏁', country:'日本', types:['轿车','SUV'], price:'12-30万', priceMin:12, priceMax:30, desc:'魂动设计+创驰蓝天，驾驶乐趣满分。', hp:'120-250匹', fuel:'燃油', models:'昂克赛拉、阿特兹、CX-5' },
+  { brand:'现代', icon:'🚙', country:'韩国', types:['轿车','SUV','新能源'], price:'10-30万', priceMin:10, priceMax:30, desc:'韩系性价比之王，设计前卫配置丰富。', hp:'115-280匹', fuel:'燃油/纯电', models:'伊兰特、索纳塔、途胜、IONIQ' },
+  { brand:'起亚', icon:'🏎️', country:'韩国', types:['轿车','SUV','新能源'], price:'10-30万', priceMin:10, priceMax:30, desc:'设计大胆前卫，全球销量增长最快的品牌之一。', hp:'115-280匹', fuel:'燃油/纯电', models:'K3、K5、狮铂拓界、EV6' },
+  { brand:'福特', icon:'🛻', country:'美国', types:['轿车','SUV','皮卡'], price:'12-40万', priceMin:12, priceMax:40, desc:'美式肌肉范，皮卡和SUV是看家本领。', hp:'120-450匹', fuel:'燃油/纯电', models:'福克斯、蒙迪欧、锐界、Mustang Mach-E' },
+];
+
+let filters = { country:'all', type:'all', price:'all' };
+
+const filterOptions = {
+  country: ['all','中国','日本','德国','美国','韩国'],
+  type: ['all','轿车','SUV','新能源','性能车','皮卡'],
+  price: ['all','0-15万','15-25万','25-50万','50万+'],
+};
+
+function renderFilters() {
+  const container = document.getElementById('filters');
+  const labels = { country:'国别', type:'类型', price:'价位' };
+  container.innerHTML = Object.entries(filterOptions).map(([key, opts]) => `
+    <div class="filter-group">
+      <span style="font-size:13px;color:#86868b;padding:8px 4px;font-weight:600">${labels[key]}:</span>
+      ${opts.map(o => {
+        const label = o==='all' ? '全部' : o;
+        const active = filters[key]===o ? 'active' : '';
+        return `<button class="filter-btn ${active}" onclick="setFilter('${key}','${o}')">${label}</button>`;
+      }).join('')}
+    </div>
+  `).join('');
+}
+
+function setFilter(key, val) {
+  filters[key] = val;
+  renderFilters();
+  renderCars();
+}
+
+function renderCars() {
+  const filtered = cars.filter(c => {
+    if (filters.country!=='all' && c.country!==filters.country) return false;
+    if (filters.type!=='all' && !c.types.includes(filters.type)) return false;
+    if (filters.price!=='all') {
+      const [lo, hi] = filters.price.replace('万+','-999').replace('万','').split('-').map(Number);
+      if (c.priceMax < lo || c.priceMin > hi) return false;
+    }
+    return true;
+  });
+
+  const grid = document.getElementById('grid');
+  if (filtered.length===0) {
+    grid.innerHTML = `<div class="empty"><div class="icon">🔍</div><p>没有匹配的车型，换个筛选条件试试</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(c => `
+    <div class="card" onclick="showDetail('${c.brand}')">
+      <div class="card-img" style="background:${bgColor(c.country)}">${c.icon}</div>
+      <div class="card-body">
+        <h3>${c.brand}</h3>
+        <div class="type">${c.country} · ${c.types[0]}</div>
+        <div class="price">${c.price}</div>
+        <div class="tags">${c.types.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function bgColor(country) {
+  const map = { '中国':'linear-gradient(135deg,#ffecd2,#fcb69f)', '日本':'linear-gradient(135deg,#e0c3fc,#8ec5fc)', '德国':'linear-gradient(135deg,#d4fc79,#96e6a1)', '美国':'linear-gradient(135deg,#a1c4fd,#c2e9fb)', '韩国':'linear-gradient(135deg,#fbc2eb,#a6c1ee)' };
+  return map[country] || 'linear-gradient(135deg,#f5f5f7,#e5e5e5)';
+}
+
+function showDetail(brand) {
+  const c = cars.find(c=>c.brand===brand);
+  if (!c) return;
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <div class="modal">
+      <div class="car-icon">${c.icon}</div>
+      <h2>${c.brand}</h2>
+      <p style="color:#86868b;margin-bottom:12px">${c.country} · ${c.types.join('/')}</p>
+      <p style="font-size:15px;line-height:1.6">${c.desc}</p>
+      <div class="specs">
+        <div class="spec"><div class="label">价格区间</div><div class="value">${c.price}</div></div>
+        <div class="spec"><div class="label">动力</div><div class="value">${c.hp}</div></div>
+        <div class="spec"><div class="label">能源类型</div><div class="value">${c.fuel}</div></div>
+        <div class="spec"><div class="label">热门车型</div><div class="value">${c.models}</div></div>
+      </div>
+      <button class="close-btn" onclick="document.getElementById('modal').style.display='none'">关闭</button>
+    </div>
+  `;
+  modal.style.display = 'flex';
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target===this) this.style.display='none';
+});
+
+renderFilters();
+renderCars();
+</script>
+</body>
+</html>
