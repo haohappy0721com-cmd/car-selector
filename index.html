@@ -1,192 +1,248 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>品牌选车 — 找到你的理想座驾</title>
 <style>
 :root {
-  --bg: #f8f9fa;
-  --card: #fff;
-  --text: #1a1a2e;
-  --muted: #6b7280;
-  --accent: #2563eb;
-  --border: #e5e7eb;
-  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-lg: 0 20px 50px rgba(0,0,0,.1);
+  --bg: #06080d;
+  --surface: #0d1117;
+  --surface2: #161b22;
+  --border: #21262d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --accent: #00a6ff;
+  --accent2: #7c3aed;
+  --green: #3fb950;
+  --red: #f85149;
+  --orange: #d29922;
+  --glow: 0 0 20px rgba(0,166,255,.15);
+  --glow-strong: 0 0 40px rgba(0,166,255,.25);
+  --glass: rgba(22,27,34,.8);
 }
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', 'PingFang SC', sans-serif;
   background: var(--bg); color: var(--text); line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(0,166,255,.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(124,58,237,.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,166,255,.02) 0%, transparent 40%);
 }
 
 /* Hero */
 .hero {
-  background: linear-gradient(160deg, #0f172a 0%, #1e293b 40%, #1e3a5f 100%);
-  color: #fff; text-align: center; padding: 60px 24px 48px;
-  position: relative; overflow: hidden;
+  position: relative; overflow: hidden; text-align: center;
+  padding: 80px 24px 56px;
+  background: linear-gradient(180deg, rgba(0,166,255,.06) 0%, transparent 100%);
+  border-bottom: 1px solid var(--border);
 }
-.hero::after {
-  content:''; position:absolute; inset:0;
-  background: radial-gradient(ellipse at 30% 50%, rgba(37,99,235,.15) 0%, transparent 60%),
-              radial-gradient(ellipse at 70% 20%, rgba(239,68,68,.1) 0%, transparent 50%);
+.hero::before {
+  content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,166,255,.02) 2px, rgba(0,166,255,.02) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,166,255,.02) 2px, rgba(0,166,255,.02) 4px);
+  animation: gridMove 20s linear infinite; pointer-events: none;
 }
-.hero h1 { font-size: clamp(28px, 5vw, 48px); font-weight: 800; position: relative; z-index: 1; letter-spacing: -.02em; }
-.hero p { font-size: 16px; color: rgba(255,255,255,.6); margin-top: 8px; position: relative; z-index: 1; }
-.hero .stats { display: flex; gap: 32px; justify-content: center; margin-top: 24px; position: relative; z-index: 1; }
-.hero .stat { text-align: center; }
-.hero .stat-val { font-size: 28px; font-weight: 700; }
-.hero .stat-label { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 2px; }
+@keyframes gridMove { 0% { transform: translate(0,0); } 100% { transform: translate(40px,40px); } }
+.hero h1 {
+  font-size: clamp(32px, 6vw, 56px); font-weight: 900; position: relative; z-index: 1;
+  background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, #a78bfa 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; letter-spacing: -.02em;
+}
+.hero p { font-size: 16px; color: var(--muted); margin-top: 8px; position: relative; z-index: 1; }
+.hero-stats { display: flex; gap: 40px; justify-content: center; margin-top: 28px; position: relative; z-index: 1; }
+.hstat { text-align: center; }
+.hstat-val { font-size: 32px; font-weight: 900; font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hstat-lbl { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .1em; }
 
 /* Search */
-.search-wrap { max-width: 480px; margin: -20px auto 0; padding: 0 24px; position: relative; z-index: 20; }
+.search-wrap { max-width: 520px; margin: -22px auto 0; padding: 0 24px; position: relative; z-index: 20; }
 .search-box {
-  width: 100%; padding: 14px 20px 14px 48px; border-radius: 16px; border: 1px solid var(--border);
-  background: var(--card); font-size: 15px; outline: none; box-shadow: 0 4px 20px rgba(0,0,0,.08);
-  transition: box-shadow .2s;
+  width: 100%; padding: 15px 20px 15px 50px; border-radius: 14px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font-size: 15px; outline: none;
+  box-shadow: var(--glow); transition: all .3s;
 }
-.search-box:focus { box-shadow: 0 4px 24px rgba(37,99,235,.15); border-color: var(--accent); }
-.search-icon { position: absolute; left: 40px; top: 14px; color: var(--muted); font-size: 18px; pointer-events: none; }
+.search-box::placeholder { color: var(--muted); }
+.search-box:focus { border-color: var(--accent); box-shadow: var(--glow-strong); }
+.search-icon-svg { position: absolute; left: 40px; top: 15px; color: var(--muted); pointer-events: none; }
 
-/* Filter bar */
-.filter-bar {
-  display: flex; gap: 10px; padding: 24px; flex-wrap: wrap; justify-content: center;
-  position: sticky; top: 0; z-index: 10; background: rgba(248,249,250,.85);
-  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid transparent; transition: border-color .3s;
+/* Sticky bar */
+.sticky-bar {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(6,8,13,.9); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border); padding: 14px 24px;
+  display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
 }
-.filter-bar.scrolled { border-bottom-color: var(--border); }
-.filter-group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
-.filter-label { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-right: 2px; }
-.filter-btn {
-  padding: 7px 15px; border: 1px solid var(--border); border-radius: 20px;
-  background: var(--card); font-size: 13px; cursor: pointer; transition: all .2s;
-  white-space: nowrap; color: var(--text); font-weight: 500;
+
+/* 筛选按钮 */
+.fgroup { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.flabel { font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+.fbtn {
+  padding: 6px 14px; border: 1px solid var(--border); border-radius: 20px;
+  background: transparent; color: var(--muted); font-size: 12px; cursor: pointer;
+  transition: all .2s; white-space: nowrap; font-weight: 500;
 }
-.filter-btn:hover { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
-.filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 8px rgba(37,99,235,.3); }
+.fbtn:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,166,255,.06); }
+.fbtn.on { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 0 16px rgba(0,166,255,.3); }
 
 /* Sort */
-.sort-bar {
-  max-width: 1300px; margin: 0 auto; padding: 0 24px 8px;
-  display: flex; justify-content: flex-end; gap: 8px;
-}
-.sort-btn { font-size: 12px; padding: 6px 12px; border: none; background: none; color: var(--muted); cursor: pointer; border-radius: 8px; }
-.sort-btn:hover { background: #e5e7eb; }
-.sort-btn.active { color: var(--accent); font-weight: 600; }
+.sort-row { max-width: 1360px; margin: 0 auto; padding: 12px 24px 4px; display: flex; justify-content: flex-end; gap: 6px; align-items: center; }
+.sort-row .count { font-size: 12px; color: var(--muted); margin-right: auto; }
+.sort-row .count span { color: var(--accent); font-weight: 700; }
+.sbtn { font-size: 11px; padding: 6px 12px; border: 1px solid transparent; background: none; color: var(--muted); cursor: pointer; border-radius: 8px; font-weight: 500; }
+.sbtn:hover { background: var(--surface2); }
+.sbtn.on { color: var(--accent); border-color: var(--border); background: var(--surface2); }
 
 /* Grid */
-.grid-wrap { max-width: 1300px; margin: 0 auto; padding: 0 24px 48px; }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 20px;
-}
+.main-wrap { max-width: 1360px; margin: 0 auto; padding: 0 24px 60px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
 .card {
-  background: var(--card); border-radius: 20px; overflow: hidden; cursor: pointer;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
-  border: 1px solid var(--border); position: relative;
-  animation: fadeUp .5s ease both;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+  overflow: hidden; cursor: pointer; transition: all .3s cubic-bezier(.34,1.56,.64,1);
+  position: relative; animation: cardIn .5s ease both;
 }
-.card:nth-child(1) { animation-delay: 0s; }
-.card:nth-child(2) { animation-delay: .04s; }
-.card:nth-child(3) { animation-delay: .08s; }
-.card:nth-child(4) { animation-delay: .12s; }
-.card:nth-child(5) { animation-delay: .16s; }
-.card:nth-child(6) { animation-delay: .2s; }
-.card:nth-child(7) { animation-delay: .24s; }
-.card:nth-child(8) { animation-delay: .28s; }
-@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-.card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
-.card-img {
-  height: 200px; background-size: cover; background-position: center;
-  position: relative; transition: transform .6s;
+.card:nth-child(1){animation-delay:0s}.card:nth-child(2){animation-delay:.03s}.card:nth-child(3){animation-delay:.06s}
+.card:nth-child(4){animation-delay:.09s}.card:nth-child(5){animation-delay:.12s}.card:nth-child(6){animation-delay:.15s}
+.card:nth-child(7){animation-delay:.18s}.card:nth-child(8){animation-delay:.21s}
+@keyframes cardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: var(--glow-strong); }
+
+/* Card header with brand logo */
+.card-header {
+  height: 160px; position: relative; display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
 }
-.card:hover .card-img { transform: scale(1.05); }
-.card-img .country-badge {
-  position: absolute; top: 14px; right: 14px;
-  background: rgba(0,0,0,.55); color: #fff; padding: 5px 12px;
-  border-radius: 20px; font-size: 11px; font-weight: 600;
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+.card-header .bg-pattern {
+  position: absolute; inset: 0; opacity: .08;
+  background-image:
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.5) 10px, rgba(255,255,255,.5) 11px),
+    repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(255,255,255,.3) 10px, rgba(255,255,255,.3) 11px);
 }
-.card-img .price-tag {
-  position: absolute; bottom: 14px; left: 14px;
-  background: rgba(0,0,0,.7); color: #fff; padding: 5px 12px;
-  border-radius: 8px; font-size: 14px; font-weight: 700;
-  backdrop-filter: blur(8px);
+.card-header .card-img-bg {
+  position: absolute; inset: 0; background-size: cover; background-position: center;
+  transition: transform .6s; opacity: .6;
 }
-.card-body { padding: 18px 20px 20px; }
-.card-body .row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.brand-logo {
-  width: 40px; height: 40px; border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 16px; font-weight: 800; color: #fff; flex-shrink: 0;
+.card:hover .card-header .card-img-bg { transform: scale(1.08); opacity: .8; }
+.card-header .card-img-bg.fallback { opacity: .15; background-size: auto; }
+.card-header .logo-placeholder {
+  position: relative; z-index: 1; width: 80px; height: 80px;
+  border-radius: 20px; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 900; color: #fff;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  transition: transform .3s;
 }
+.card:hover .card-header .logo-placeholder { transform: scale(1.08); }
+.card-header .country-chip {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 700;
+  background: rgba(0,0,0,.5); color: rgba(255,255,255,.8);
+  backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.1);
+}
+
+.card-body { padding: 16px 18px 18px; }
+.card-body .name-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
 .card-body h3 { font-size: 17px; font-weight: 700; }
-.card-body .models { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
-.card-body .tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.tag { padding: 4px 10px; border-radius: 8px; font-size: 11px; background: #f1f5f9; color: #475569; font-weight: 500; }
+.card-body .en-name { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+.card-body .price-line { font-size: 15px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.card-body .model-chips { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 8px; }
+.mchip { padding: 3px 8px; border-radius: 6px; font-size: 10px; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+.card-body .type-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.ttag { padding: 3px 9px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+.ttag.ev { background: rgba(63,185,80,.15); color: var(--green); }
+.ttag.sedan { background: rgba(0,166,255,.12); color: var(--accent); }
+.ttag.suv { background: rgba(210,153,34,.15); color: var(--orange); }
+.ttag.perf { background: rgba(248,81,73,.15); color: var(--red); }
+.ttag.pickup { background: rgba(139,148,158,.15); color: var(--muted); }
 
 /* Modal */
 .modal-overlay {
-  position: fixed; inset:0; background: rgba(15,23,42,.6); z-index:100;
-  display:flex; align-items:center; justify-content:center; padding:24px;
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  position: fixed; inset:0; background: rgba(0,0,0,.75); z-index:100;
+  display:flex; align-items:center; justify-content:center; padding:20px;
+  backdrop-filter: blur(10px);
 }
 .modal {
-  background: var(--card); border-radius: 24px; max-width: 520px; width: 100%;
-  max-height: 88vh; overflow-y: auto; animation: modalIn .3s ease;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 24px;
+  max-width: 560px; width: 100%; max-height: 88vh; overflow-y: auto;
+  animation: modIn .3s ease; box-shadow: 0 0 60px rgba(0,166,255,.1);
 }
-@keyframes modalIn { from { opacity:0; transform:scale(.95) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
-.modal .hero-img { height: 260px; background-size: cover; background-position: center; position: relative; }
-.modal .hero-img .back-btn {
-  position: absolute; top: 16px; left: 16px; width: 36px; height: 36px;
-  border-radius: 50%; background: rgba(0,0,0,.45); color: #fff; border: none;
-  font-size: 18px; cursor: pointer; backdrop-filter: blur(8px);
-  display: flex; align-items: center; justify-content: center;
+@keyframes modIn { from{opacity:0;transform:scale(.94) translateY(16px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal .m-hero {
+  height: 220px; position: relative; display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
 }
-.modal-body { padding: 24px; }
-.modal-body h2 { font-size: 26px; font-weight: 800; letter-spacing: -.01em; }
-.modal-body .sub { font-size: 14px; color: var(--muted); margin: 4px 0 16px; }
-.modal-body .desc { font-size: 15px; line-height: 1.7; color: #374151; margin-bottom: 20px; }
-.specs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.spec-item { background: #f8fafc; border-radius: 14px; padding: 16px; }
-.spec-item .lbl { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
-.spec-item .val { font-size: 17px; font-weight: 700; margin-top: 4px; }
-.modal-body .cta {
-  display: block; width: 100%; padding: 15px; margin-top: 22px;
-  background: #0f172a; color: #fff; border: none; border-radius: 16px;
-  font-size: 16px; font-weight: 700; cursor: pointer; transition: opacity .2s;
+.modal .m-hero .m-img { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: .55; }
+.modal .m-hero .m-logo {
+  position: relative; z-index: 1; width: 90px; height: 90px;
+  border-radius: 22px; display: flex; align-items: center; justify-content: center;
+  font-size: 32px; font-weight: 900; color: #fff;
+  box-shadow: 0 12px 40px rgba(0,0,0,.5);
 }
-.modal-body .cta:hover { opacity: .88; }
+.modal .m-close {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2);
+  background: rgba(0,0,0,.4); color: #fff; font-size: 16px; cursor: pointer;
+  backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
+}
+
+.modal .m-body { padding: 24px; }
+.modal .m-body h2 { font-size: 26px; font-weight: 800; letter-spacing: -.01em; display: flex; align-items: center; gap: 10px; }
+.modal .m-body h2 .en { font-size: 13px; color: var(--muted); font-weight: 500; text-transform: uppercase; }
+.modal .m-body .sub { font-size: 13px; color: var(--muted); margin: 4px 0 12px; }
+.modal .m-body .desc { font-size: 14px; line-height: 1.7; color: var(--text); opacity: .85; margin-bottom: 8px; }
+
+.modal .section-title {
+  font-size: 12px; font-weight: 700; color: var(--accent); text-transform: uppercase;
+  letter-spacing: .08em; margin: 20px 0 10px;
+}
+.modal .model-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.model-card {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px; transition: border-color .2s;
+}
+.model-card:hover { border-color: var(--accent); }
+.model-card .mname { font-weight: 700; font-size: 14px; }
+.model-card .mtype { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.model-card .mprice { font-size: 13px; color: var(--accent); font-weight: 600; margin-top: 4px; }
+
+.modal .specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+.spec-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.spec-item .lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+.spec-item .val { font-size: 16px; font-weight: 700; margin-top: 3px; }
+.modal .m-cta { display: block; width: 100%; padding: 14px; margin-top: 20px;
+  background: linear-gradient(135deg, var(--accent), #7c3aed);
+  color: #fff; border: none; border-radius: 14px; font-size: 15px; font-weight: 700;
+  cursor: pointer; transition: opacity .2s, box-shadow .2s; text-align: center;
+}
+.modal .m-cta:hover { opacity: .9; box-shadow: 0 0 24px rgba(0,166,255,.3); }
 
 .empty-state { text-align: center; padding: 80px 20px; }
-.empty-state .icon { font-size: 72px; margin-bottom: 16px; display: block; }
-.empty-state h3 { font-size: 18px; color: var(--text); margin-bottom: 6px; }
+.empty-state .icon { font-size: 64px; display: block; margin-bottom: 16px; }
+.empty-state h3 { font-size: 18px; margin-bottom: 6px; }
 .empty-state p { color: var(--muted); }
 
-/* Footer */
-.footer { text-align: center; padding: 32px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
+.footer { text-align: center; padding: 32px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); }
 
-/* Skeleton loader */
-.skeleton { background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
 @media (max-width: 640px) {
-  .hero { padding: 40px 20px 36px; }
-  .hero .stats { gap: 20px; }
-  .hero .stat-val { font-size: 22px; }
-  .filter-bar { padding: 14px 10px; gap: 8px; }
+  .hero { padding: 50px 16px 40px; }
+  .hero-stats { gap: 24px; }
   .grid { grid-template-columns: 1fr; }
-  .grid-wrap { padding: 0 12px 36px; }
-  .modal .hero-img { height: 200px; }
-  .sort-bar { padding: 0 12px 8px; }
+  .main-wrap { padding: 0 12px 40px; }
+  .sticky-bar { padding: 10px 10px; gap: 6px; }
+  .modal .model-grid { grid-template-columns: 1fr; }
+  .modal .m-hero { height: 170px; }
 }
 </style>
 </head>
@@ -194,189 +250,258 @@ body {
 
 <div class="hero">
   <h1>找到你的理想座驾</h1>
-  <p>精选全球 24 大汽车品牌，按预算和喜好快速筛选</p>
-  <div class="stats">
-    <div class="stat"><div class="stat-val" id="brandCount">24</div><div class="stat-label">品牌</div></div>
-    <div class="stat"><div class="stat-val">6</div><div class="stat-label">国别</div></div>
-    <div class="stat"><div class="stat-val">8-500万</div><div class="stat-label">价格覆盖</div></div>
+  <p>24 大品牌 · 经典车型一览 · 智能筛选</p>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-val">24</div><div class="hstat-lbl">品牌</div></div>
+    <div class="hstat"><div class="hstat-val">7</div><div class="hstat-lbl">国别</div></div>
+    <div class="hstat"><div class="hstat-val">96+</div><div class="hstat-lbl">热门车型</div></div>
+    <div class="hstat"><div class="hstat-val">7-500万</div><div class="hstat-lbl">价格覆盖</div></div>
   </div>
 </div>
 
 <div class="search-wrap">
-  <span class="search-icon">🔍</span>
-  <input class="search-box" id="search" placeholder="搜索品牌、车型、类型..." oninput="renderCars()">
+  <svg class="search-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  <input class="search-box" id="search" placeholder="搜索品牌、车型、类型..." oninput="render()">
 </div>
 
-<div class="filter-bar" id="filterBar"></div>
-
-<div class="sort-bar">
-  <span style="font-size:12px;color:var(--muted);margin-right:auto"><span id="resultCount">24</span> 个品牌</span>
-  <button class="sort-btn active" onclick="setSort('default')">默认</button>
-  <button class="sort-btn" onclick="setSort('price-asc')">价格↑</button>
-  <button class="sort-btn" onclick="setSort('price-desc')">价格↓</button>
+<div class="sticky-bar" id="filterBar">
+  <div class="fgroup">
+    <span class="flabel">国别</span>
+    <button class="fbtn on" data-k="country" data-v="all">全部</button>
+    <button class="fbtn" data-k="country" data-v="中国">中国</button>
+    <button class="fbtn" data-k="country" data-v="德国">德国</button>
+    <button class="fbtn" data-k="country" data-v="日本">日本</button>
+    <button class="fbtn" data-k="country" data-v="美国">美国</button>
+    <button class="fbtn" data-k="country" data-v="韩国">韩国</button>
+    <button class="fbtn" data-k="country" data-v="瑞典">瑞典</button>
+    <button class="fbtn" data-k="country" data-v="英国">英国</button>
+  </div>
+  <div class="fgroup">
+    <span class="flabel">类型</span>
+    <button class="fbtn on" data-k="type" data-v="all">全部</button>
+    <button class="fbtn" data-k="type" data-v="轿车">轿车</button>
+    <button class="fbtn" data-k="type" data-v="SUV">SUV</button>
+    <button class="fbtn" data-k="type" data-v="新能源">新能源</button>
+    <button class="fbtn" data-k="type" data-v="性能车">性能车</button>
+    <button class="fbtn" data-k="type" data-v="皮卡">皮卡</button>
+  </div>
+  <div class="fgroup">
+    <span class="flabel">价位</span>
+    <button class="fbtn on" data-k="price" data-v="all">全部</button>
+    <button class="fbtn" data-k="price" data-v="0-15万">10万内</button>
+    <button class="fbtn" data-k="price" data-v="10-20万">10-20万</button>
+    <button class="fbtn" data-k="price" data-v="20-35万">20-35万</button>
+    <button class="fbtn" data-k="price" data-v="35-60万">35-60万</button>
+    <button class="fbtn" data-k="price" data-v="60万+">60万+</button>
+  </div>
 </div>
 
-<div class="grid-wrap"><div class="grid" id="grid"></div></div>
+<div class="sort-row">
+  <span class="count"><span id="count">24</span> 个品牌</span>
+  <button class="sbtn on" data-s="default">默认</button>
+  <button class="sbtn" data-s="price-asc">价格 ↑</button>
+  <button class="sbtn" data-s="price-desc">价格 ↓</button>
+</div>
+
+<div class="main-wrap"><div class="grid" id="grid"></div></div>
 <div class="modal-overlay" id="modal" style="display:none"></div>
-
-<div class="footer">© 2026 品牌选车 · 数据仅供参考，以官方为准</div>
+<div class="footer">© 2026 品牌选车 · 数据仅供参考</div>
 
 <script>
-// 24 品牌完整数据
+// ===== 完整数据：24品牌 + 标志性车型 =====
 const brands = [
-  { id:'byd', name:'比亚迪', logo:'BYD', color:'#1a1a1a', country:'中国', types:['新能源','轿车','SUV'], price:'8-35万', pMin:8, pMax:35, desc:'中国新能源汽车全球销冠。刀片电池、DM-i 超级混动、易四方等技术引领行业，连续三年蝉联国内新能源销量第一。', hp:'100-680匹', fuel:'纯电/混动', models:'秦Plus · 汉 · 唐 · 宋Pro · 海豹 · 海鸥 · 仰望U8', img:'https://images.unsplash.com/photo-1690533655582-6d55b6b0c353?w=600&h=340&fit=crop&auto=format' },
-  { id:'tesla', name:'特斯拉', logo:'T', color:'#e82127', country:'美国', types:['新能源','轿车','SUV'], price:'23-90万', pMin:23, pMax:90, desc:'全球智能电动车标杆。Autopilot/FSD 自动驾驶、超充网络、一体化压铸技术持续领先，Model Y 全球最畅销车型。', hp:'280-1020匹', fuel:'纯电', models:'Model 3 · Model Y · Model S · Model X · Cybertruck', img:'https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&h=340&fit=crop&auto=format' },
-  { id:'bmw', name:'宝马', logo:'BM', color:'#1c69d4', country:'德国', types:['轿车','SUV','性能车'], price:'25-200万', pMin:25, pMax:200, desc:'巴伐利亚发动机厂，驾控乐趣的代名词。50:50 配重、后驱基因、iDrive 系统，从 3 系到 i 系列纯电全布局。', hp:'156-625匹', fuel:'燃油/纯电/混动', models:'3系 · 5系 · X3 · X5 · X7 · i4 · iX', img:'https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&h=340&fit=crop&auto=format' },
-  { id:'benz', name:'奔驰', logo:'三叉', color:'#111', country:'德国', types:['轿车','SUV','性能车'], price:'25-300万', pMin:25, pMax:300, desc:'汽车发明者再次发明汽车。豪华内饰标杆、MBUX 超屏、S 级定义行政级天花板，EQ 系列加速电动化转型。', hp:'163-630匹', fuel:'燃油/纯电', models:'C级 · E级 · S级 · GLC · GLE · EQS · 大G', img:'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&h=340&fit=crop&auto=format' },
-  { id:'audi', name:'奥迪', logo:'Ao', color:'#000', country:'德国', types:['轿车','SUV','性能车'], price:'20-200万', pMin:20, pMax:200, desc:'突破科技启迪未来。Quattro 全时四驱、虚拟座舱、矩阵大灯，灯厂出品必属精品。RS 系列性能猛兽。', hp:'150-600匹', fuel:'燃油/纯电', models:'A4L · A6L · Q5L · Q7 · e-tron · RS7', img:'https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=600&h=340&fit=crop&auto=format' },
-  { id:'porsche', name:'保时捷', logo:'P', color:'#0f0f0f', country:'德国', types:['性能车','SUV','轿车'], price:'55-300万', pMin:55, pMax:300, desc:'无可替代的跑车传奇。911 是汽车工业的活化石，Cayenne 拯救了品牌，Taycan 重新定义电动跑车。', hp:'265-650匹', fuel:'燃油/纯电', models:'911 · Panamera · Cayenne · Macan · Taycan', img:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=340&fit=crop&auto=format' },
-  { id:'toyota', name:'丰田', logo:'丰', color:'#eb0a1e', country:'日本', types:['轿车','SUV','新能源'], price:'12-40万', pMin:12, pMax:40, desc:'全球销量冠军，精益生产鼻祖。THS 混动系统无可匹敌，皮实耐用开不坏，保值率常年霸榜。', hp:'100-300匹', fuel:'燃油/混动/纯电', models:'卡罗拉 · 凯美瑞 · RAV4 · 汉兰达 · 普拉多 · bZ4X', img:'https://images.unsplash.com/photo-1629897048514-3dd7414fe72a?w=600&h=340&fit=crop&auto=format' },
-  { id:'honda', name:'本田', logo:'本', color:'#cc0000', country:'日本', types:['轿车','SUV'], price:'11-35万', pMin:11, pMax:35, desc:'买发动机送车。VTEC 高转自吸、i-MMD 混动、地球梦科技，从飞度到思域 Type-R，驾驶乐趣不打折。', hp:'120-280匹', fuel:'燃油/混动', models:'飞度 · 思域 · 雅阁 · CR-V · 皓影 · 型格', img:'https://images.unsplash.com/photo-1622151273313-9bb12b1e3b41?w=600&h=340&fit=crop&auto=format' },
-  { id:'nissan', name:'日产', logo:'日', color:'#c3002f', country:'日本', types:['轿车','SUV','新能源'], price:'10-35万', pMin:10, pMax:35, desc:'技术日产人车生活。大沙发舒适性无敌，e-POWER 增程技术独辟蹊径，GT-R 战神是日系性能图腾。', hp:'120-300匹', fuel:'燃油/纯电/增程', models:'轩逸 · 天籁 · 逍客 · 奇骏 · Ariya · GT-R', img:'https://images.unsplash.com/photo-1652444089532-9c52e61c7508?w=600&h=340&fit=crop&auto=format' },
-  { id:'mazda', name:'马自达', logo:'马', color:'#101010', country:'日本', types:['轿车','SUV'], price:'12-30万', pMin:12, pMax:30, desc:'魂动设计+创驰蓝天。转子发动机的偏执狂，人马一体的驾驶哲学，在涡轮时代坚持自吸的浪漫主义者。', hp:'120-250匹', fuel:'燃油', models:'昂克赛拉 · 阿特兹 · CX-5 · CX-50 · MX-5', img:'https://images.unsplash.com/photo-1606016159991-dfe4f2746ea5?w=600&h=340&fit=crop&auto=format' },
-  { id:'lexus', name:'雷克萨斯', logo:'L', color:'#1a1a1a', country:'日本', types:['轿车','SUV','性能车'], price:'25-150万', pMin:25, pMax:150, desc:'日系豪华巅峰。匠人精神贯穿造车全程，LS 级静音媲美劳斯莱斯，混动科技+极致可靠=雷式豪华。', hp:'150-350匹', fuel:'燃油/混动/纯电', models:'ES · RX · NX · LS · LX · LC', img:'https://images.unsplash.com/photo-1633860531520-c6b26500c6b9?w=600&h=340&fit=crop&auto=format' },
-  { id:'nio', name:'蔚来', logo:'N', color:'#00b5e2', country:'中国', types:['新能源','SUV','轿车'], price:'30-60万', pMin:30, pMax:60, desc:'中国高端纯电开拓者。换电 3 分钟满血复活，NIO House 打造用户社区文化，ET7 获德国金方向盘奖。', hp:'435-653匹', fuel:'纯电', models:'ET5 · ET7 · ES6 · ES8 · EC6 · ET9', img:'https://images.unsplash.com/photo-1704305433569-26d2f42fb2fa?w=600&h=340&fit=crop&auto=format' },
-  { id:'xpeng', name:'小鹏', logo:'X', color:'#00a0e9', country:'中国', types:['新能源','轿车','SUV'], price:'15-40万', pMin:15, pMax:40, desc:'未来出行探索者。XNGP 城市智驾行业第一梯队，全栈自研智能驾驶和智能座舱，飞行汽车已在路上。', hp:'200-500匹', fuel:'纯电', models:'P7i · G6 · G9 · X9 · MONA M03', img:'https://images.unsplash.com/photo-1669808913899-339db6aa08eb?w=600&h=340&fit=crop&auto=format' },
-  { id:'lixiang', name:'理想', logo:'理', color:'#1eab5c', country:'中国', types:['新能源','SUV'], price:'25-45万', pMin:25, pMax:45, desc:'家庭首选奶爸神车。增程式无里程焦虑，冰箱彩电大沙发+大六座空间精准拿捏中国家庭需求。', hp:'330-450匹', fuel:'增程', models:'L6 · L7 · L8 · L9 · MEGA', img:'https://images.unsplash.com/photo-1696232200989-9ef95895e1e3?w=600&h=340&fit=crop&auto=format' },
-  { id:'vw', name:'大众', logo:'VW', color:'#003c8f', country:'德国', types:['轿车','SUV','新能源'], price:'10-35万', pMin:10, pMax:35, desc:'Das Auto，德系国民车。MQB 平台覆盖全球，ID. 系列加速电气化，在中国从桑塔纳到 ID.4 影响了三代人。', hp:'100-300匹', fuel:'燃油/纯电', models:'朗逸 · 帕萨特 · 迈腾 · 途观L · 途昂 · ID.4', img:'https://images.unsplash.com/photo-1568234922283-656dc5bba7f6?w=600&h=340&fit=crop&auto=format' },
-  { id:'volvo', name:'沃尔沃', logo:'沃', color:'#003057', country:'瑞典', types:['轿车','SUV','新能源'], price:'25-80万', pMin:25, pMax:80, desc:'北欧豪华安全至上。三点式安全带发明者，City Safety 标配全系，用安全定义豪华的瑞典倔强。', hp:'163-408匹', fuel:'燃油/纯电/混动', models:'S60 · S90 · XC60 · XC90 · EX30 · EX90', img:'https://images.unsplash.com/photo-1625472603517-1b0dc72846ab?w=600&h=340&fit=crop&auto=format' },
-  { id:'hyundai', name:'现代', logo:'现', color:'#002c5f', country:'韩国', types:['轿车','SUV','新能源'], price:'10-30万', pMin:10, pMax:30, desc:'韩系性价比之王全球崛起。IONIQ 纯电平台横扫国际大奖，N 系列性能线挑战德系钢炮。', hp:'115-280匹', fuel:'燃油/纯电', models:'伊兰特 · 索纳塔 · 途胜 · 帕里斯帝 · IONIQ 5/6', img:'https://images.unsplash.com/photo-1626178068476-9f342eae7375?w=600&h=340&fit=crop&auto=format' },
-  { id:'kia', name:'起亚', logo:'K', color:'#bb162b', country:'韩国', types:['轿车','SUV','新能源'], price:'10-30万', pMin:10, pMax:30, desc:'设计驱动品牌焕新。EV6/EV9 连续斩获国际设计大奖，虎啸前脸辨识度极高，全球销量增速最快之一。', hp:'115-280匹', fuel:'燃油/纯电', models:'K3 · K5 · 狮铂拓界 · 嘉华 · EV6 · EV9', img:'https://images.unsplash.com/photo-1661442877659-6982d4193b94?w=600&h=340&fit=crop&auto=format' },
-  { id:'ford', name:'福特', logo:'F', color:'#1351d8', country:'美国', types:['轿车','SUV','皮卡'], price:'12-40万', pMin:12, pMax:40, desc:'美式肌肉范百年老厂。F-150 全球最畅销皮卡，Mustang 是几代人的梦想，纵置后驱平台驾控出众。', hp:'120-450匹', fuel:'燃油/纯电', models:'福克斯 · 蒙迪欧 · 锐界L · 探险者 · Mustang Mach-E', img:'https://images.unsplash.com/photo-1612544409026-9d4c27c45e70?w=600&h=340&fit=crop&auto=format' },
-  { id:'cadillac', name:'凯迪拉克', logo:'凯', color:'#1a1a1a', country:'美国', types:['轿车','SUV','新能源'], price:'22-55万', pMin:22, pMax:55, desc:'美式豪华总统座驾。钻石切割设计语言独树一帜，MRC 电磁悬挂黑科技，LYRIQ 开启纯电新篇章。', hp:'200-350匹', fuel:'燃油/纯电', models:'CT5 · XT5 · XT6 · LYRIQ 锐歌 · Celestiq', img:'https://images.unsplash.com/photo-1626635745493-62b027b8d4a1?w=600&h=340&fit=crop&auto=format' },
-  { id:'chery', name:'奇瑞', logo:'CH', color:'#e60012', country:'中国', types:['轿车','SUV','新能源'], price:'7-25万', pMin:7, pMax:25, desc:'中国品牌出口冠军。鲲鹏动力+火星架构，连续 21 年自主品牌出口第一，在海外比在国内还受欢迎。', hp:'100-260匹', fuel:'燃油/混动/纯电', models:'瑞虎8 · 艾瑞泽8 · 星途 · 捷途 · iCAR', img:'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=340&fit=crop&auto=format' },
-  { id:'geely', name:'吉利', logo:'吉', color:'#0050a0', country:'中国', types:['轿车','SUV','新能源'], price:'8-35万', pMin:8, pMax:35, desc:'中国品牌全面开花。CMA 架构源自沃尔沃技术，收购路特斯/极星布局全球，银河系列新能源表现抢眼。', hp:'120-350匹', fuel:'燃油/混动/纯电', models:'星瑞 · 星越L · 博越 · 帝豪 · 银河L7 · 极氪', img:'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=600&h=340&fit=crop&auto=format' },
-  { id:'landrover', name:'路虎', logo:'LR', color:'#0a3a2a', country:'英国', types:['SUV','性能车'], price:'35-250万', pMin:35, pMax:250, desc:'越野之王英伦贵族。全地形反馈系统无路也有路虎，卫士/揽胜是 SUV 界的两座丰碑。', hp:'200-550匹', fuel:'燃油/混动/纯电', models:'揽胜 · 揽运 · 卫士 · 发现 · 极光', img:'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=340&fit=crop&auto=format' },
-  { id:'jaguar', name:'捷豹', logo:'J', color:'#0a3a2a', country:'英国', types:['轿车','SUV','性能车'], price:'30-100万', pMin:30, pMax:100, desc:'英伦优雅运动绅士。全铝车身轻量化先锋，F-TYPE 声浪迷人，设计从不随波逐流的英国美学。', hp:'200-550匹', fuel:'燃油/纯电', models:'XEL · XFL · F-PACE · F-TYPE · I-PACE', img:'https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?w=600&h=340&fit=crop&auto=format' },
+  { id:'byd', name:'比亚迪', en:'BYD', logo:'BYD', logoColor:'#1a1a1a', types:['新能源','轿车','SUV'], country:'中国', pMin:7, pMax:35, price:'7-35万', hp:'100-680匹', fuel:'纯电/混动', desc:'中国新能源汽车全球销冠。刀片电池、DM-i 超级混动技术领先行业。', img:'', models:[
+    {name:'秦Plus DM-i', type:'紧凑轿车', price:'7.98万起', ev:true},{name:'汉EV', type:'中大型轿车', price:'17.98万起', ev:true},{name:'宋Pro DM-i', type:'紧凑SUV', price:'10.98万起', ev:true},{name:'海豹', type:'中型轿车', price:'14.98万起', ev:true}
+  ]},
+  { id:'tesla', name:'特斯拉', en:'Tesla', logo:'T', logoColor:'#e82127', types:['新能源','轿车','SUV'], country:'美国', pMin:23, pMax:90, price:'23-90万', hp:'280-1020匹', fuel:'纯电', desc:'全球智能电动车标杆。Autopilot/FSD 自动驾驶持续领先。', img:'', models:[
+    {name:'Model 3', type:'中型轿车', price:'23.19万起', ev:true},{name:'Model Y', type:'中型SUV', price:'24.99万起', ev:true},{name:'Model S', type:'豪华轿车', price:'68.49万起', ev:true},{name:'Cybertruck', type:'电动皮卡', price:'未定价', ev:true}
+  ]},
+  { id:'bmw', name:'宝马', en:'BMW', logo:'BM', logoColor:'#1c69d4', types:['轿车','SUV','性能车'], country:'德国', pMin:25, pMax:200, price:'25-200万', hp:'156-625匹', fuel:'燃油/纯电/混动', desc:'驾控乐趣的代名词。50:50配重、后驱基因、iDrive系统。', img:'', models:[
+    {name:'3系', type:'运动轿车', price:'29.99万起'},{name:'5系', type:'行政轿车', price:'43.99万起'},{name:'X5', type:'豪华SUV', price:'61.50万起'},{name:'i4', type:'纯电轿跑', price:'42.99万起', ev:true}
+  ]},
+  { id:'benz', name:'奔驰', en:'Mercedes-Benz', logo:'奔', logoColor:'#111', types:['轿车','SUV','性能车'], country:'德国', pMin:25, pMax:300, price:'25-300万', hp:'163-630匹', fuel:'燃油/纯电', desc:'汽车发明者。豪华内饰标杆、MBUX超屏、S级定义天花板。', img:'', models:[
+    {name:'C级', type:'运动轿车', price:'33.48万起'},{name:'E级', type:'行政轿车', price:'44.90万起'},{name:'GLC', type:'中型SUV', price:'42.78万起'},{name:'EQS', type:'纯电旗舰', price:'88.10万起', ev:true}
+  ]},
+  { id:'audi', name:'奥迪', en:'Audi', logo:'Ao', logoColor:'#000', types:['轿车','SUV','性能车'], country:'德国', pMin:20, pMax:200, price:'20-200万', hp:'150-600匹', fuel:'燃油/纯电', desc:'科技感十足的德系豪华。Quattro四驱、虚拟座舱。', img:'', models:[
+    {name:'A4L', type:'运动轿车', price:'32.18万起'},{name:'A6L', type:'行政轿车', price:'42.79万起'},{name:'Q5L', type:'中型SUV', price:'39.75万起'},{name:'e-tron', type:'纯电SUV', price:'54.68万起', ev:true}
+  ]},
+  { id:'porsche', name:'保时捷', en:'Porsche', logo:'P', logoColor:'#0f0f0f', types:['性能车','SUV','轿车'], country:'德国', pMin:55, pMax:300, price:'55-300万', hp:'265-650匹', fuel:'燃油/纯电', desc:'跑车传奇。911是工业活化石，Taycan重新定义电动跑车。', img:'', models:[
+    {name:'911', type:'传奇跑车', price:'129.80万起'},{name:'Panamera', type:'行政轿跑', price:'99.80万起'},{name:'Cayenne', type:'豪华SUV', price:'92.30万起'},{name:'Taycan', type:'纯电跑车', price:'89.80万起', ev:true}
+  ]},
+  { id:'toyota', name:'丰田', en:'Toyota', logo:'丰', logoColor:'#eb0a1e', types:['轿车','SUV','新能源'], country:'日本', pMin:12, pMax:40, price:'12-40万', hp:'100-300匹', fuel:'燃油/混动', desc:'全球销冠。THS混动系统无可匹敌，皮实耐用保值率高。', img:'', models:[
+    {name:'卡罗拉', type:'紧凑轿车', price:'11.68万起'},{name:'凯美瑞', type:'中型轿车', price:'17.98万起'},{name:'RAV4', type:'紧凑SUV', price:'17.68万起'},{name:'汉兰达', type:'中型SUV', price:'26.88万起'}
+  ]},
+  { id:'honda', name:'本田', en:'Honda', logo:'本', logoColor:'#cc0000', types:['轿车','SUV'], country:'日本', pMin:11, pMax:35, price:'11-35万', hp:'120-280匹', fuel:'燃油/混动', desc:'买发动机送车。VTEC高转自吸，i-MMD混动，驾驶乐趣满满。', img:'', models:[
+    {name:'思域', type:'运动轿车', price:'12.99万起'},{name:'雅阁', type:'中型轿车', price:'17.98万起'},{name:'CR-V', type:'紧凑SUV', price:'18.59万起'},{name:'飞度', type:'小型车', price:'8.68万起'}
+  ]},
+  { id:'nissan', name:'日产', en:'Nissan', logo:'日', logoColor:'#c3002f', types:['轿车','SUV','新能源'], country:'日本', pMin:10, pMax:35, price:'10-35万', hp:'120-300匹', fuel:'燃油/纯电', desc:'技术日产。大沙发舒适无敌，e-POWER增程独辟蹊径。', img:'', models:[
+    {name:'轩逸', type:'紧凑轿车', price:'10.86万起'},{name:'天籁', type:'中型轿车', price:'17.98万起'},{name:'逍客', type:'紧凑SUV', price:'12.59万起'},{name:'Ariya', type:'纯电SUV', price:'19.99万起', ev:true}
+  ]},
+  { id:'mazda', name:'马自达', en:'Mazda', logo:'马', logoColor:'#101010', types:['轿车','SUV'], country:'日本', pMin:12, pMax:30, price:'12-30万', hp:'120-250匹', fuel:'燃油', desc:'魂动设计+创驰蓝天。转子发动机的执着，人马一体的驾驶哲学。', img:'', models:[
+    {name:'昂克赛拉', type:'运动轿车', price:'11.59万起'},{name:'阿特兹', type:'中型轿车', price:'17.58万起'},{name:'CX-5', type:'紧凑SUV', price:'12.58万起'},{name:'MX-5', type:'敞篷跑车', price:'33.90万起'}
+  ]},
+  { id:'lexus', name:'雷克萨斯', en:'Lexus', logo:'L', logoColor:'#1a1a1a', types:['轿车','SUV','性能车'], country:'日本', pMin:25, pMax:150, price:'25-150万', hp:'150-350匹', fuel:'燃油/混动/纯电', desc:'日系豪华巅峰。匠人精神贯穿造车全程，静音与可靠并存。', img:'', models:[
+    {name:'ES', type:'行政轿车', price:'29.69万起'},{name:'RX', type:'豪华SUV', price:'40.50万起'},{name:'NX', type:'中型SUV', price:'31.88万起'},{name:'LC', type:'豪华跑车', price:'129.60万起'}
+  ]},
+  { id:'nio', name:'蔚来', en:'NIO', logo:'N', logoColor:'#00b5e2', types:['新能源','SUV','轿车'], country:'中国', pMin:30, pMax:60, price:'30-60万', hp:'435-653匹', fuel:'纯电', desc:'中国高端纯电开拓者。换电3分钟满血复活，NIO House社区文化。', img:'', models:[
+    {name:'ET5', type:'中型轿车', price:'29.80万起', ev:true},{name:'ET7', type:'行政轿车', price:'45.80万起', ev:true},{name:'ES6', type:'中型SUV', price:'33.80万起', ev:true},{name:'ES8', type:'大型SUV', price:'49.80万起', ev:true}
+  ]},
+  { id:'xpeng', name:'小鹏', en:'XPENG', logo:'X', logoColor:'#00a0e9', types:['新能源','轿车','SUV'], country:'中国', pMin:15, pMax:40, price:'15-40万', hp:'200-500匹', fuel:'纯电', desc:'智能驾驶先锋。XNGP城市智驾行业第一梯队，飞行汽车已在路上。', img:'', models:[
+    {name:'P7i', type:'运动轿跑', price:'22.39万起', ev:true},{name:'G6', type:'中型SUV', price:'20.99万起', ev:true},{name:'G9', type:'旗舰SUV', price:'26.39万起', ev:true},{name:'X9', type:'纯电MPV', price:'35.98万起', ev:true}
+  ]},
+  { id:'lixiang', name:'理想', en:'Li Auto', logo:'理', logoColor:'#1eab5c', types:['新能源','SUV'], country:'中国', pMin:25, pMax:45, price:'25-45万', hp:'330-450匹', fuel:'增程', desc:'家庭奶爸神车。冰箱彩电大沙发+大六座无里程焦虑。', img:'', models:[
+    {name:'L6', type:'中型SUV', price:'24.98万起', ev:true},{name:'L7', type:'大型SUV', price:'30.98万起', ev:true},{name:'L8', type:'六座SUV', price:'33.98万起', ev:true},{name:'L9', type:'旗舰SUV', price:'42.98万起', ev:true}
+  ]},
+  { id:'vw', name:'大众', en:'Volkswagen', logo:'VW', logoColor:'#003c8f', types:['轿车','SUV','新能源'], country:'德国', pMin:10, pMax:35, price:'10-35万', hp:'100-300匹', fuel:'燃油/纯电', desc:'德系国民车。MQB平台覆盖全球，从桑塔纳到ID.4影响几代人。', img:'', models:[
+    {name:'朗逸', type:'紧凑轿车', price:'10.99万起'},{name:'帕萨特', type:'中型轿车', price:'16.45万起'},{name:'途观L', type:'中型SUV', price:'13.98万起'},{name:'ID.4', type:'纯电SUV', price:'14.99万起', ev:true}
+  ]},
+  { id:'volvo', name:'沃尔沃', en:'Volvo', logo:'沃', logoColor:'#003057', types:['轿车','SUV','新能源'], country:'瑞典', pMin:25, pMax:80, price:'25-80万', hp:'163-408匹', fuel:'燃油/纯电', desc:'北欧安全豪华。三点式安全带发明者，标配City Safety。', img:'', models:[
+    {name:'S60', type:'运动轿车', price:'29.69万起'},{name:'S90', type:'行政轿车', price:'40.69万起'},{name:'XC60', type:'中型SUV', price:'37.79万起'},{name:'EX30', type:'纯电SUV', price:'20.08万起', ev:true}
+  ]},
+  { id:'hyundai', name:'现代', en:'Hyundai', logo:'现', logoColor:'#002c5f', types:['轿车','SUV','新能源'], country:'韩国', pMin:10, pMax:30, price:'10-30万', hp:'115-280匹', fuel:'燃油/纯电', desc:'韩系性价比之王。IONIQ纯电平台横扫国际大奖。', img:'', models:[
+    {name:'伊兰特', type:'紧凑轿车', price:'9.98万起'},{name:'索纳塔', type:'中型轿车', price:'13.98万起'},{name:'途胜', type:'紧凑SUV', price:'16.18万起'},{name:'IONIQ 6', type:'纯电轿车', price:'22.08万起', ev:true}
+  ]},
+  { id:'kia', name:'起亚', en:'Kia', logo:'K', logoColor:'#bb162b', types:['轿车','SUV','新能源'], country:'韩国', pMin:10, pMax:30, price:'10-30万', hp:'115-280匹', fuel:'燃油/纯电', desc:'设计驱动品牌焕新。EV6/EV9连续斩获国际设计大奖。', img:'', models:[
+    {name:'K3', type:'紧凑轿车', price:'11.29万起'},{name:'K5', type:'中型轿车', price:'16.28万起'},{name:'狮铂拓界', type:'紧凑SUV', price:'17.98万起'},{name:'EV6', type:'纯电跨界', price:'28.28万起', ev:true}
+  ]},
+  { id:'ford', name:'福特', en:'Ford', logo:'F', logoColor:'#1351d8', types:['轿车','SUV','皮卡'], country:'美国', pMin:12, pMax:40, price:'12-40万', hp:'120-450匹', fuel:'燃油/纯电', desc:'美式肌肉百年老厂。F-150全球最畅销皮卡。', img:'', models:[
+    {name:'蒙迪欧', type:'中型轿车', price:'14.98万起'},{name:'锐界L', type:'中型SUV', price:'22.98万起'},{name:'探险者', type:'大型SUV', price:'30.98万起'},{name:'Mustang Mach-E', type:'纯电SUV', price:'26.50万起', ev:true}
+  ]},
+  { id:'cadillac', name:'凯迪拉克', en:'Cadillac', logo:'凯', logoColor:'#1a1a1a', types:['轿车','SUV','新能源'], country:'美国', pMin:22, pMax:55, price:'22-55万', hp:'200-350匹', fuel:'燃油/纯电', desc:'美式豪华总统座驾。钻石切割设计，MRC电磁悬挂。', img:'', models:[
+    {name:'CT5', type:'运动轿车', price:'27.97万起'},{name:'XT5', type:'中型SUV', price:'32.97万起'},{name:'XT6', type:'大型SUV', price:'38.97万起'},{name:'LYRIQ', type:'纯电SUV', price:'29.77万起', ev:true}
+  ]},
+  { id:'chery', name:'奇瑞', en:'Chery', logo:'CH', logoColor:'#e60012', types:['轿车','SUV','新能源'], country:'中国', pMin:7, pMax:25, price:'7-25万', hp:'100-260匹', fuel:'燃油/混动/纯电', desc:'中国品牌出口冠军。鲲鹏动力+火星架构，21年出口第一。', img:'', models:[
+    {name:'瑞虎8', type:'中型SUV', price:'9.78万起'},{name:'艾瑞泽8', type:'紧凑轿车', price:'10.89万起'},{name:'瑞虎9', type:'大型SUV', price:'15.29万起'},{name:'iCAR 03', type:'纯电SUV', price:'10.98万起', ev:true}
+  ]},
+  { id:'geely', name:'吉利', en:'Geely', logo:'吉', logoColor:'#0050a0', types:['轿车','SUV','新能源'], country:'中国', pMin:8, pMax:35, price:'8-35万', hp:'120-350匹', fuel:'燃油/混动/纯电', desc:'全面开花。CMA架构源自沃尔沃，收购路特斯布局全球。', img:'', models:[
+    {name:'星瑞', type:'紧凑轿车', price:'10.87万起'},{name:'星越L', type:'紧凑SUV', price:'13.72万起'},{name:'博越L', type:'紧凑SUV', price:'10.97万起'},{name:'银河L7', type:'混动SUV', price:'13.87万起', ev:true}
+  ]},
+  { id:'landrover', name:'路虎', en:'Land Rover', logo:'LR', logoColor:'#0a3a2a', types:['SUV','性能车'], country:'英国', pMin:35, pMax:250, price:'35-250万', hp:'200-550匹', fuel:'燃油/混动/纯电', desc:'越野之王。全地形反馈系统，卫士/揽胜是SUV界丰碑。', img:'', models:[
+    {name:'揽胜', type:'旗舰SUV', price:'142.80万起'},{name:'揽运', type:'运动SUV', price:'96.80万起'},{name:'卫士', type:'硬派越野', price:'68.80万起'},{name:'极光', type:'紧凑SUV', price:'38.98万起'}
+  ]},
+  { id:'jaguar', name:'捷豹', en:'Jaguar', logo:'J', logoColor:'#0a3a2a', types:['轿车','SUV'], country:'英国', pMin:30, pMax:100, price:'30-100万', hp:'200-550匹', fuel:'燃油/纯电', desc:'英伦优雅运动。全铝车身轻量化先锋，F-TYPE声浪迷人。', img:'', models:[
+    {name:'XEL', type:'运动轿车', price:'29.98万起'},{name:'XFL', type:'行政轿车', price:'39.98万起'},{name:'F-PACE', type:'运动SUV', price:'46.80万起'},{name:'F-TYPE', type:'跑车', price:'58.20万起'}
+  ]},
 ];
 
 let filters = { country:'all', type:'all', price:'all' };
 let sort = 'default';
-let search = '';
 
-const filterDefs = {
-  country: { label:'国别', opts: ['all','中国','德国','日本','美国','韩国','瑞典','英国'] },
-  type:    { label:'类型', opts: ['all','轿车','SUV','新能源','性能车','皮卡'] },
-  price:   { label:'价位', opts: ['all','0-15万','15-25万','25-50万','50万+'] },
-};
-
-// Filter bar scroll shadow
-window.addEventListener('scroll', () => {
-  document.getElementById('filterBar').classList.toggle('scrolled', window.scrollY > 10);
+// --- Filter buttons ---
+document.querySelectorAll('.fbtn').forEach(b => {
+  b.addEventListener('click', () => {
+    const k = b.dataset.k, v = b.dataset.v;
+    // Toggle
+    if (filters[k] === v && v !== 'all') {
+      filters[k] = 'all';
+    } else {
+      filters[k] = v;
+    }
+    // Update active states
+    document.querySelectorAll(`.fbtn[data-k="${k}"]`).forEach(btn => {
+      btn.classList.toggle('on', btn.dataset.v === filters[k]);
+    });
+    render();
+  });
 });
 
-function initFilters() {
-  const bar = document.getElementById('filterBar');
-  bar.innerHTML = Object.entries(filterDefs).map(([key, def]) => `
-    <div class="filter-group">
-      <span class="filter-label">${def.label}</span>
-      ${def.opts.map(o => {
-        const label = o==='all' ? '全部' : o;
-        const active = filters[key]===o ? ' active' : '';
-        return `<button class="filter-btn${active}" data-key="${key}" data-val="${o}">${label}</button>`;
-      }).join('')}
-    </div>
-  `).join('');
-
-  // Event delegation
-  bar.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const k = btn.dataset.key, v = btn.dataset.val;
-      filters[k] = v;
-      initFilters();
-      renderCars();
-    });
+// --- Sort buttons ---
+document.querySelectorAll('.sbtn').forEach(b => {
+  b.addEventListener('click', () => {
+    sort = b.dataset.s;
+    document.querySelectorAll('.sbtn').forEach(bb => bb.classList.remove('on'));
+    b.classList.add('on');
+    render();
   });
-}
+});
 
-function setSort(mode) {
-  sort = mode;
-  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`[onclick="setSort('${mode}')"]`)?.classList.add('active');
-  renderCars();
-}
+// --- Tag colors ---
+const tagClass = {
+  '新能源':'ev', '轿车':'sedan', 'SUV':'suv', '性能车':'perf', '皮卡':'pickup'
+};
 
-// Image error fallback
-function imgFallback(el, brand) {
-  const colors = {
-    '中国':'linear-gradient(135deg,#ff6b35,#f7931e)',
-    '德国':'linear-gradient(135deg,#1a1a2e,#16213e)',
-    '日本':'linear-gradient(135deg,#e63946,#c9184a)',
-    '美国':'linear-gradient(135deg,#003049,#023e8a)',
-    '韩国':'linear-gradient(135deg,#2d6a4f,#40916c)',
-    '瑞典':'linear-gradient(135deg,#1e3a5f,#3273a8)',
-    '英国':'linear-gradient(135deg,#0b3d2e,#1b5e20)',
-  };
-  el.style.backgroundImage = colors[brand.country] || 'linear-gradient(135deg,#374151,#1f2937)';
-}
-
-function renderCars() {
+// --- Render ---
+function render() {
   const query = (document.getElementById('search').value || '').toLowerCase();
 
-  let filtered = brands.filter(c => {
+  let list = brands.filter(c => {
     if (filters.country!=='all' && c.country!==filters.country) return false;
     if (filters.type!=='all' && !c.types.includes(filters.type)) return false;
     if (filters.price!=='all') {
-      const [lo, hi] = filters.price.replace('万+','-999').replace('万','').split('-').map(Number);
-      if (c.pMax < lo || c.pMin > hi) return false;
+      const p = filters.price;
+      if (p==='0-15万' && c.pMin>=15) return false;
+      if (p==='10-20万' && (c.pMax<10 || c.pMin>20)) return false;
+      if (p==='20-35万' && (c.pMax<20 || c.pMin>35)) return false;
+      if (p==='35-60万' && (c.pMax<35 || c.pMin>60)) return false;
+      if (p==='60万+' && c.pMax<60) return false;
     }
-    if (query && !c.name.includes(query) && !c.models.includes(query) && !c.types.some(t=>t.includes(query)) && !c.country.includes(query)) return false;
+    if (query && !c.name.includes(query) && !c.en.toLowerCase().includes(query) && !c.models.some(m=>m.name.includes(query)) && !c.types.some(t=>t.includes(query))) return false;
     return true;
   });
 
-  if (sort==='price-asc') filtered.sort((a,b) => a.pMin - b.pMin);
-  if (sort==='price-desc') filtered.sort((a,b) => b.pMin - a.pMin);
+  if (sort==='price-asc') list.sort((a,b)=>a.pMin-b.pMin);
+  if (sort==='price-desc') list.sort((a,b)=>b.pMin-a.pMin);
 
-  document.getElementById('resultCount').textContent = filtered.length;
-  document.getElementById('brandCount').textContent = brands.length;
+  document.getElementById('count').textContent = list.length;
 
   const grid = document.getElementById('grid');
-  if (filtered.length===0) {
-    grid.innerHTML = `<div class="empty-state"><span class="icon">🔍</span><h3>没有匹配结果</h3><p>试试调整筛选条件或搜索关键词</p></div>`;
+  if (list.length===0) {
+    grid.innerHTML = '<div class="empty-state"><span class="icon">🔍</span><h3>没有匹配结果</h3><p>试试调整筛选条件或搜索关键词</p></div>';
     return;
   }
 
-  grid.innerHTML = filtered.map(c => `
+  grid.innerHTML = list.map(c => `
     <div class="card" onclick="openModal('${c.id}')">
-      <div class="card-img" style="background-image:url('${c.img}')" onerror="imgFallback(this, {country:'${c.country}'})">
-        <span class="country-badge">${c.country}</span>
-        <span class="price-tag">${c.price}</span>
+      <div class="card-header" style="background:linear-gradient(135deg,${c.logoColor}22,${c.logoColor}08)">
+        <div class="bg-pattern"></div>
+        <div class="logo-placeholder" style="background:linear-gradient(135deg,${c.logoColor},${c.logoColor}dd)">${c.logo}</div>
+        <span class="country-chip">${c.country}</span>
       </div>
       <div class="card-body">
-        <div class="row">
-          <div class="brand-logo" style="background:${c.color}">${c.logo}</div>
-          <h3>${c.name}</h3>
-        </div>
-        <div class="models">${c.models}</div>
-        <div class="tags">${c.types.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+        <div class="name-row"><h3>${c.name}</h3><span class="en-name">${c.en}</span></div>
+        <div class="price-line">${c.price}</div>
+        <div class="model-chips">${c.models.map(m=>`<span class="mchip">${m.name.split(' ')[0]}</span>`).join('')}</div>
+        <div class="type-tags">${c.types.map(t=>`<span class="ttag ${tagClass[t]||''}">${t}</span>`).join('')}</div>
       </div>
     </div>
   `).join('');
 }
 
+// --- Modal ---
 function openModal(id) {
   const c = brands.find(b=>b.id===id); if (!c) return;
-  const modal = document.getElementById('modal');
-  modal.innerHTML = `
+  const m = document.getElementById('modal');
+  m.innerHTML = `
     <div class="modal">
-      <div class="hero-img" style="background-image:url('${c.img}')" onerror="this.style.backgroundImage='linear-gradient(135deg,#1e293b,#334155)'">
-        <button class="back-btn" onclick="closeModal()">✕</button>
+      <div class="m-hero" style="background:linear-gradient(135deg,${c.logoColor}33,${c.logoColor}11)">
+        <div class="m-logo" style="background:linear-gradient(135deg,${c.logoColor},${c.logoColor}dd)">${c.logo}</div>
+        <button class="m-close" onclick="closeModal()">✕</button>
       </div>
-      <div class="modal-body">
-        <h2>${c.name}</h2>
+      <div class="m-body">
+        <h2>${c.name}<span class="en">${c.en}</span></h2>
         <p class="sub">${c.country} · ${c.types.join(' / ')}</p>
         <p class="desc">${c.desc}</p>
         <div class="specs">
           <div class="spec-item"><div class="lbl">价格区间</div><div class="val">${c.price}</div></div>
-          <div class="spec-item"><div class="lbl">马力范围</div><div class="val">${c.hp}</div></div>
+          <div class="spec-item"><div class="lbl">马力</div><div class="val">${c.hp}</div></div>
           <div class="spec-item"><div class="lbl">能源类型</div><div class="val">${c.fuel}</div></div>
-          <div class="spec-item"><div class="lbl">热门车型</div><div class="val">${c.models}</div></div>
+          <div class="spec-item"><div class="lbl">车型数量</div><div class="val">${c.models.length}+ 款</div></div>
         </div>
-        <button class="cta" onclick="closeModal()">关闭</button>
+        <div class="section-title">🔥 热门车型</div>
+        <div class="model-grid">
+          ${c.models.map(m => `
+            <div class="model-card">
+              <div class="mname">${m.name}${m.ev?' ⚡':''}</div>
+              <div class="mtype">${m.type}</div>
+              <div class="mprice">${m.price}</div>
+            </div>
+          `).join('')}
+        </div>
+        <button class="m-cta" onclick="closeModal()">关闭</button>
       </div>
     </div>
   `;
-  modal.style.display = 'flex';
+  m.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
 
@@ -385,18 +510,12 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target===this) closeModal();
-});
-
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id==='modal') closeModal(); });
 document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
-
 window.openModal = openModal;
 window.closeModal = closeModal;
-window.setSort = setSort;
 
-initFilters();
-renderCars();
+render();
 </script>
 </body>
 </html>
