@@ -355,7 +355,7 @@ function render() {
     <div class="card" onclick="openModal('${c.id}')">
       <div class="img-area" style="background-image:url('images/${c.id}-1.jpg')">
         <div class="img-overlay"><span class="hover-hint">点击查看详情</span></div>
-        <div class="brand-icon" style="background:linear-gradient(135deg,${c.lc},${c.lc}dd)">${c.logo}</div>
+        <img src="images/${c.id}-logo.png" alt="${c.name}" style="width:64px;height:64px;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))" onerror="this.style.display='none'">
       </div>
       <div class="info">
         <div class="brand"><h3>${c.name}</h3><span class="en">${c.en}</span></div>
@@ -377,7 +377,7 @@ function openModal(id) {
   document.getElementById('modal').innerHTML = `
     <div class="modal">
       <div class="m-img" style="background-image:url('images/${c.id}-1.jpg');background-size:cover;background-position:center">
-        <div class="m-logo" style="background:linear-gradient(135deg,${c.lc},${c.lc}dd)">${c.logo}</div>
+        <img src="images/${c.id}-logo.png" alt="${c.name}" style="width:80px;height:80px;object-fit:contain;position:relative;z-index:1;filter:drop-shadow(0 4px 20px rgba(0,0,0,.5))" onerror="this.style.display='none'">
         <button class="m-close" onclick="closeModal()">✕</button>
       </div>
       <div class="m-body">
