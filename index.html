@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -382,7 +382,7 @@ function openModal(id) {
           <div class="sbox"><div class="sl">热门车型</div><div class="sv">${c.models.length}+ 款</div></div>
         </div>
         <div class="sec">热门车型</div>
-        <div class="m-grid">${c.models.map((m,i)=>`<div class="mcard" style="background-image:url('images/${c.id}-model-${i+1}.jpg');background-size:cover;background-position:center;min-height:100px;position:relative;overflow:hidden"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7)0%,rgba(0,0,0,.1)50%)"></div><div style="position:relative;z-index:1"><div class="mn" style="color:#fff">${m.n}${m.ev?' ⚡':''}</div><div class="mt" style="color:rgba(255,255,255,.7)">${m.t}</div><div class="mp" style="color:#fff">${m.p}</div></div></div>`).join('')}</div>
+        <div class="m-grid">${c.models.map((m,i)=>`<div class="mcard" style="background-color:${c.lc}33;background-image:url('images/${c.id}-model-${i+1}.jpg');background-size:cover;background-position:center;min-height:100px;position:relative;overflow:hidden"><div style="position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.7)0%,rgba(0,0,0,.1)50%)"></div><div style="position:relative;z-index:1"><div class="mn" style="color:#fff">${m.n}${m.ev?' ⚡':''}</div><div class="mt" style="color:rgba(255,255,255,.7)">${m.t}</div><div class="mp" style="color:#fff">${m.p}</div></div></div>`).join('')}</div>
         <button class="m-btn" onclick="closeModal()">关闭</button>
       </div>
     </div>
