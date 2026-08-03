@@ -98,9 +98,14 @@ body {
 }
 .card .img-area .img-overlay {
   position: absolute; inset: 0; background: rgba(0,0,0,.15);
-  transition: background .3s;
+  transition: background .3s; display: flex; align-items: center; justify-content: center;
 }
-.card:hover .img-area .img-overlay { background: rgba(0,0,0,.08); }
+.card .img-area .img-overlay .hover-hint {
+  color: #fff; font-size: 14px; font-weight: 600; opacity: 0;
+  transition: opacity .3s; text-shadow: 0 2px 8px rgba(0,0,0,.5);
+}
+.card:hover .img-area .img-overlay .hover-hint { opacity: 1; }
+.card:hover .img-area .img-overlay { background: rgba(0,0,0,.25); }
 .card .img-area .brand-icon {
   width: 72px; height: 72px; border-radius: 18px; display: flex;
   align-items: center; justify-content: center; font-size: 26px;
@@ -349,7 +354,7 @@ function render() {
   grid.innerHTML = list.map(c => `
     <div class="card" onclick="openModal('${c.id}')">
       <div class="img-area" style="background-image:url('images/${c.id}-1.jpg')">
-        <div class="img-overlay"></div>
+        <div class="img-overlay"><span class="hover-hint">点击查看详情</span></div>
         <div class="brand-icon" style="background:linear-gradient(135deg,${c.lc},${c.lc}dd)">${c.logo}</div>
       </div>
       <div class="info">
@@ -357,6 +362,10 @@ function render() {
         <div class="price">${c.price}</div>
         <div class="tags">${c.types.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
         <div class="models-row">${c.models.map(m=>`<span>${m.n.split(' ')[0]}</span>`).join('')}</div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--c-border);display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:12px;color:var(--c-text3)">${c.models.length} 款热门车型</span>
+          <span style="font-size:13px;font-weight:600;color:var(--c-text)">查看详情 →</span>
+        </div>
       </div>
     </div>
   `).join('');
